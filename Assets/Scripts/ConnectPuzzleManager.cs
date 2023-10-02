@@ -241,27 +241,40 @@ public class ConnectPuzzleManager : MonoBehaviour
             {
                 if ( ( currentIndexX == startX && currentIndexY == startY ) || ( currentIndexX == lastHitX ) || (currentIndexY == lastHitY ))
                 {
-                    GameObject hit = Instantiate(hitCircleObj);
-                    hit.transform.position = center3;
-                    hit.transform.parent = hitCircleLineTop.transform;
-                    mapHit[currentIndexY, currentIndexX] = 1;
-
-                    if ( !(currentIndexX == startX && currentIndexY == startY))
+                    // •Ç‚Ì”»’è‚ð“ü‚ê‚é
+                    bool hitWall = false;
+                    for (int i = 0; i < WallSettings.Length; i++)
                     {
-                        GameObject line = Instantiate(lineBaseObj);
-                        line.transform.position = center3;
-                        LineRenderer lineRenderer= line.GetComponent<LineRenderer>();
-                        lineRenderer.startWidth = 0.2f;
-                        lineRenderer.endWidth = 0.2f;
-                        lineRenderer.positionCount = 2;
-                        lineRenderer.SetPosition(0, lastHitPosition);
-                        lineRenderer.SetPosition(1, center3);
-                        line.transform.parent = hitCircleLineTop.transform;
+                        if (WallSettings[i].CheckCrossWall(currentIndexX, currentIndexY, lastHitX, lastHitY))
+                        {
+                            hitWall = true;
+                        }
                     }
+                    if ( !hitWall )
+                    {
+                        GameObject hit = Instantiate(hitCircleObj);
+                        hit.transform.position = center3;
+                        hit.transform.parent = hitCircleLineTop.transform;
+                        mapHit[currentIndexY, currentIndexX] = 1;
 
-                    lastHitX = currentIndexX;
-                    lastHitY = currentIndexY;
-                    lastHitPosition = center3;
+                        if (!(currentIndexX == startX && currentIndexY == startY))
+                        {
+                            GameObject line = Instantiate(lineBaseObj);
+                            line.transform.position = center3;
+                            LineRenderer lineRenderer = line.GetComponent<LineRenderer>();
+                            lineRenderer.startWidth = 0.2f;
+                            lineRenderer.endWidth = 0.2f;
+                            lineRenderer.positionCount = 2;
+                            lineRenderer.SetPosition(0, lastHitPosition);
+                            lineRenderer.SetPosition(1, center3);
+                            line.transform.parent = hitCircleLineTop.transform;
+                        }
+
+                        lastHitX = currentIndexX;
+                        lastHitY = currentIndexY;
+                        lastHitPosition = center3;
+                    }
+                    
                 }
                 
             }
@@ -300,6 +313,18 @@ public class ConnectPuzzleManager : MonoBehaviour
             checkHit();
             // Debug.Log(mouseWorldPosition);
         }
+    }
+
+    public Vector3 calcCenterPosFromIndex( int indexX, int indexY)
+    {
+        Vector2 pos = mapLeftTop;
+        pos.x += (float)indexX * mapXStep;
+        pos.y += (float)indexY * mapYStep;
+
+        Vector3 vector3 = pos;
+        vector3.z = 0f;
+
+        return vector3;
     }
 
 }
