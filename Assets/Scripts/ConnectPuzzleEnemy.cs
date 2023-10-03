@@ -17,6 +17,7 @@ public class ConnectPuzzleEnemy : MonoBehaviour
     [SerializeField] int startY;
 
     [SerializeField] float speed;
+    [SerializeField] float hitRadious = 0.4f;
     Vector3 point1;
     Vector3 point2;
     Vector3 startPoint;
@@ -49,6 +50,10 @@ public class ConnectPuzzleEnemy : MonoBehaviour
     {
         if (connectPuzzleManager != null)
         {
+            if ( !connectPuzzleManager.isStarted() )
+            {
+                return;
+            }
             if ( moveDirType == ENEMY_MOVE_DIR_TYPE.ENEMY_MOVE_1_TO_2 )
             {
                 if ( enemyType == ENEMY_TYPE.ENEMY_VETICAL)
@@ -141,6 +146,30 @@ public class ConnectPuzzleEnemy : MonoBehaviour
                     }
                 }
             }
+
+            // マウスの位置をチェック
+
+        }
+    }
+
+    public bool mouseHitCheck( Vector3 mouseWorldPos)
+    {
+        Vector3 mp = mouseWorldPos;
+        mp.z = 0;
+
+        Vector3 ep = gameObject.transform.position;
+        ep.z = 0;
+
+        // Debug.Log( "mp:" + mp.ToString() + " ep:" + ep.ToString() + " dist:" + Vector3.Distance(mp, ep).ToString());
+        if ( Vector3.Distance(mp, ep) < hitRadious)
+        {
+            // Debug.Log("Hit!!");
+            return true;
+            
+        }
+        else
+        {
+            return false;
         }
     }
 }

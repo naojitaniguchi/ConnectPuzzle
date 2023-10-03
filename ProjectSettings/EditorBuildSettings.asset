@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConnectPuzzle.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Clear.unity
+    guid: 01dceb93a2f605640884422f449c33fb
+  - enabled: 1
+    path: Assets/Scenes/NotClear.unity
+    guid: 6e4e0cb3b3ff71748b44f907c4cd4b71
   m_configObjects: {}
